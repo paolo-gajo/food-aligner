@@ -1,0 +1,108 @@
+% Description of data/GZ/GZ_GOLD/GZ-GOLD_301.json
+% Derived from Gajo & Barrón-Cedeño, "On Cross-Language Entity Label
+% Projection and Recognition", CLiC-it 2024 (2024.clicit-1.47).
+%
+% This file is meant to be \input{} into a paper that already loads the
+% booktabs package. It can also be compiled on its own by uncommenting the
+% standalone preamble below.
+%
+% \documentclass{article}
+% \usepackage{booktabs}
+% \usepackage[T1]{fontenc}
+% \begin{document}
+% \input{dataset_description}
+% \end{document}
+
+\section{The GialloZafferano (GZ) Gold Dataset}
+\label{sec:gz-gold}
+
+The file \texttt{GZ-GOLD\_301.json} contains the gold portion of the
+GialloZafferano (GZ) dataset, a manually annotated English--Italian parallel
+corpus of culinary ingredient lists used to evaluate the cross-language entity
+alignment and recognition models described in this work. The recipes were
+collected from GialloZafferano,\footnote{\url{https://www.giallozafferano.it}}
+where the English recipes are human translations of the Italian originals. The
+data is partially out-of-domain with respect to the machine-translated training
+data, as regards the food products, units of measure, and cooking processes it
+covers, which makes it a suitable test bed for our models.
+
+\paragraph{Format.}
+The dataset is a JSON export from Label
+Studio,\footnote{\url{https://labelstud.io}} the tool used for the manual
+annotation. It is a list of $597$ recipe objects. Each object carries a unique
+\texttt{id} together with a \texttt{data} field holding the parallel raw text
+and metadata of the recipe, and an \texttt{annotations} field holding the
+manual labels. The \texttt{data} field provides, for each of the two languages
+$\ell \in \{\texttt{en}, \texttt{it}\}$, the source URL (\texttt{url\_\ell}),
+the recipe title (\texttt{title\_\ell}), a short presentation
+(\texttt{presentation\_\ell}), the ingredient list (\texttt{ingredients\_\ell}),
+and the preparation steps (\texttt{preparation\_\ell}). The annotations are
+applied to the \texttt{ingredients\_en} and \texttt{ingredients\_it} strings,
+in which the individual ingredients are separated by semicolons.
+
+\paragraph{Annotations.}
+The corpus was annotated by a single professional translator, a native speaker
+of Italian holding an MA in Specialized Translation in English and Spanish, in
+two successive tasks. The first is a multi-class span-annotation (NER) task in
+which spans of the ingredient lists, in both languages, are assigned one of the
+recipe Named Entity (r-NE) categories: \textsc{food}, \textsc{quantity},
+\textsc{unit}, \textsc{process}, \textsc{physical\_quality}, \textsc{color},
+\textsc{taste}, \textsc{purpose}, and \textsc{part}.\footnote{A handful of spans
+($8$ in English, $33$ in Italian) carry the residual \textsc{quality/brand}
+label, which is not part of the main label scheme.} The second is a
+cross-language entity-linking task in which each source (English) entity is
+linked to its corresponding target (Italian) entity, with the possibility of a
+source entity being linked to more than one target entity and vice versa. The
+latter situation arises because some recipes list more than one ingredient
+option in one language but not in the other, e.g.\ \emph{Cocomero (anguria) 1
+fetta} vs.\ \emph{Watermelon 1 slice}.
+
+In the JSON, each annotated span is a \texttt{result} element of
+\texttt{type}~\texttt{labels}, with \texttt{from\_name} either \texttt{label\_en}
+or \texttt{label\_it}, a \texttt{value} giving the character-level
+\texttt{start}/\texttt{end} offsets, the surface \texttt{text}, and the assigned
+\texttt{labels}, plus a unique span \texttt{id}. Each alignment is a
+\texttt{result} element of \texttt{type}~\texttt{relation} connecting a source
+and a target span through their \texttt{id}s (\texttt{from\_id}/\texttt{to\_id}),
+with a bidirectional \texttt{direction}.
+
+\paragraph{Coverage.}
+All $597$ recipes are bilingual and carry NER annotations in both languages.
+The cross-language alignments were annotated on a subset of $300$ recipes.
+Because the paired recipes do not always coincide completely---some ingredients
+may be missing in one language or replaced by an equivalent rather than the same
+food product---alignments were not annotated whenever the share of source
+ingredients missing from the target recipe exceeded a heuristic threshold of
+$1/3$, so as to avoid aligning excessively divergent recipes. In total, the
+dataset contains $46{,}903$ entity annotations ($26{,}631$ in English and
+$20{,}272$ in Italian) and $9{,}842$ alignments (on average $\approx 33$ per
+aligned recipe). Quantities and units of measure are localized: the Italian
+recipes use SI units whereas the English ones additionally report imperial
+units, which is reflected in the considerably lower number of
+\textsc{quantity} and \textsc{unit} spans on the Italian side.
+Table~\ref{tab:gz-classes} reports the per-class distribution of the entity
+annotations.
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Class & GZ (en) & GZ (it) \\
+    \midrule
+    food         & 5{,}958  & 6{,}473  \\
+    quantity     & 10{,}186 & 6{,}564  \\
+    unit         & 8{,}148  & 4{,}450  \\
+    process      & 217      & 265      \\
+    physical q.  & 1{,}245  & 1{,}547  \\
+    color        & 482      & 479      \\
+    taste        & 98       & 72       \\
+    purpose      & 69       & 126      \\
+    part         & 220      & 263      \\
+    \midrule
+    total        & 26{,}631 & 20{,}272 \\
+    \bottomrule
+  \end{tabular}
+  \caption{Per-class distribution of the entity annotations in the GZ gold
+  dataset (\texttt{GZ-GOLD\_301.json}), for the English and Italian portions.}
+  \label{tab:gz-classes}
+\end{table}
