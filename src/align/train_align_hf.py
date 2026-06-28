@@ -159,6 +159,9 @@ if __name__ == '__main__':
         parser.add_argument("--data_name", help="path of the dataset to train on", default = 'datasets/alignment/en-it/DebertaV2TokenizerFast/EW-TT-MT_multi_ctx_P0.3_en-it')
         args = parser.parse_args()
         # args.model_name = 'microsoft/mdeberta-v3-base'
+        # args.model_name = 'google-bert/bert-base-multilingual-cased'
+        
         # args.data_name = 'datasets/alignment/en-it/DebertaV2TokenizerFast/EW-TT-MT_multi_ctx_P0.3_en-it'
         # args.data_name = './datasets/alignment/en-it/DebertaV2TokenizerFast/mdeberta-v3-base/mdeberta_xlwa_en-it'
+        # args.data_name = './datasets/alignment/en-it/BertTokenizerFast/bert-base-multilingual-cased/mbert_xlwa_en-it'
         main(args)

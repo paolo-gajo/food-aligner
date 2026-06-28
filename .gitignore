@@ -19,4 +19,6 @@ awesome-align/
 .bertexperiments/
 bert_crf/
 .old/
-.paper/
+paper/
+paper/code
+results/

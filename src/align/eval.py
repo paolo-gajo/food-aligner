@@ -23,11 +23,16 @@ def main(args):
                         )
     print("langs:", data_langs)
     model_list = []
+    print('model_dir:', args.model_dir)
     for model_path, dirs, files in os.walk(args.model_dir):
+        # print(model_path, files)
         if files:
-            model_langs = re.search(r'([a-z]{2}-[a-z]{2})(-[a-z]{2})?', model_path).group(0)
+            model_langs = re.search(r'_([a-z]{2}-[a-z]{2}(-[a-z]{2})?)_', model_path).group(1)
+            # print("model_langs:", model_langs)
             if data_langs==model_langs:
                 model_list.append(model_path)
+                
+    print(f'no. of models being tested: {len(model_list)}')
     model_list.sort()
     for model_path in model_list:
         print(model_path)
@@ -81,7 +86,7 @@ def main(args):
         if not os.path.exists(metrics_save_path):
             os.makedirs(metrics_save_path)
         
-        evaluator.evaluate(model, split, epoch, eval_metric='test', model_name=model_name_simple)
+        evaluator.evaluate(model, split, epoch, eval_metric='test', model_name=model_name_simple, save_predictions=True)
         epoch_test_loss /= len(dataset_test[split])
         evaluator.epoch_metrics[f'{split}_loss'] = epoch_test_loss
 

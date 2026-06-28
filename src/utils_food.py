@@ -65,7 +65,7 @@ class SquadEvaluator:
         self.type_metrics_dict = None
         self.prediction_dataset = []
 
-    def evaluate(self, model, split, epoch, eval_metric = 'dev', model_name = ''):
+    def evaluate(self, model, split, epoch, eval_metric = 'dev', model_name = '', save_predictions = False):
         self.epoch_metrics[f'{split}_f1'] = self.eval_fc.compute(predictions=self.preds[split],
                                                 references=self.trues[split])['f1']
         self.epoch_metrics[f'{split}_exact'] = self.eval_fc.compute(predictions=self.preds[split],
@@ -88,8 +88,9 @@ class SquadEvaluator:
                     'support': len(preds_type),
                     }
                 )
-            pd.DataFrame(self.type_metrics_dict).to_csv(f'type_metrics_dict_{model_name}.csv')
-            pd.DataFrame(self.prediction_dataset).to_csv(f'prediction_dataset_{model_name}.csv')
+            if save_predictions:
+                pd.DataFrame(self.type_metrics_dict).to_csv(f'type_metrics_dict_{model_name}.csv')
+                pd.DataFrame(self.prediction_dataset).to_csv(f'prediction_dataset_{model_name}.csv')
 
         self.preds[split] = []
         self.trues[split] = []

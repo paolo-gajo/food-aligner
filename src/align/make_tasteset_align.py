@@ -25,8 +25,8 @@ def main():
     args.shuffled_size = 1
     args.drop_duplicates = True
 
-    # tokenizer_name = 'bert-base-multilingual-cased'
-    tokenizer_name = 'microsoft/mdeberta-v3-base'
+    tokenizer_name = 'google-bert/bert-base-multilingual-cased'
+    # tokenizer_name = 'microsoft/mdeberta-v3-base'
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
@@ -50,7 +50,7 @@ def main():
     ]
     all_classes = ['FOOD', 'QUANTITY', 'UNIT', 'PROCESS', 'PHYSICAL_QUALITY', 'COLOR', 'TASTE', 'PURPOSE', 'PART',]
     
-    for i in range(5,11):
+    for i in range(3,11):
         # if i > 2:
         #     break
         dataset = TASTEset.from_json(

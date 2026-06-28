@@ -4,11 +4,10 @@ import os
 import re
 import json
 
-model_dir = './results/alignment/en-it/test/GZ-GOLD_301_DebertaV2TokenizerFast_en-it'
-
+results_dir = './results/alignment/en-it/test/GZ-GOLD_301_BertTokenizerFast_en-it/mbert'
+model_name = results_dir.split('/')[-1]
 df = pd.DataFrame()
-# results/alignment/en-it/test/GZ-GOLD_301_DebertaV2TokenizerFast_en-it/mdeberta-v3-base_EW-TT-MT_multi_ctx_P0.3_en-it_ME3_2024-09-27-16-00-59_E0_TEST0
-for root, dirs, files in os.walk(model_dir):
+for root, dirs, files in os.walk(results_dir):
     dir_name = root.split('/')[-1]
     metrics_name = 'metrics.json'
     if metrics_name in files:
@@ -41,5 +40,5 @@ df_grouped = df_grouped.round(2)
 # df_grouped['exact']['std'].apply(lambda x: "{:.2f}".format(x))
 # df_grouped['exact'].apply(lambda x: "{:.2f}".format(x))
 print(df_grouped)
-df_grouped.to_csv(os.path.join(model_dir, 'aggregated_results.csv'), float_format='%.2f')
-df_grouped.to_latex(os.path.join(model_dir, 'aggregated_results.tex'), float_format='%.2f')
+df_grouped.to_csv(os.path.join(results_dir, f'{model_name}_aggregated_results.csv'), float_format='%.2f')
+df_grouped.to_latex(os.path.join(results_dir, f'{model_name}_aggregated_results.tex'), float_format='%.2f')

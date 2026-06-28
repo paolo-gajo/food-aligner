@@ -9,13 +9,13 @@ def main():
     unshuffled_size = 1
     shuffled_size = 0
 
-    # tokenizer_name = 'bert-base-multilingual-cased'
-    tokenizer_name = 'microsoft/mdeberta-v3-base'
+    tokenizer_name = 'bert-base-multilingual-cased'
+    # tokenizer_name = 'microsoft/mdeberta-v3-base'
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
-    # data_path = './data/GZ/GZ_GOLD/GZ-GOLD_301.json'
-    data_path = './data/mycolombianrecipes/MCR-GOLD_291.json'
+    data_path = './data/GZ/GZ_GOLD/GZ-GOLD_301.json'
+    # data_path = './data/mycolombianrecipes/MCR-GOLD_291.json'
     class_filter = [
         # 'FOOD',
         # 'QUANTITY',
@@ -29,7 +29,7 @@ def main():
     ]
     all_classes = ['FOOD', 'QUANTITY', 'UNIT', 'PROCESS', 'PHYSICAL_QUALITY', 'COLOR', 'TASTE', 'PURPOSE', 'PART',]
     src_lang = 'en'
-    tgt_langs = ['es']
+    tgt_langs = ['it']
     dataset = TASTEset.from_json(
         data_path,
         tokenizer = tokenizer,
